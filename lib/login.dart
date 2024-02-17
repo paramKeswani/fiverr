@@ -10,10 +10,22 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final _formkey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Center(child: Text("Login")),
         backgroundColor: Color.fromARGB(255, 223, 230, 236),
       ),
@@ -26,16 +38,31 @@ class _LoginState extends State<Login> {
           child: Column(
             children: [
               Image.asset("images/login.jpg"),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Username',
-                ),
-              ),
-              TextFormField(
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                ),
+              Form(
+                key: _formkey,
+                child: Column(children: [
+                  TextFormField(
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                      labelText: 'Username',
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) return 'Empty email';
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Password',
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) return 'Empty password';
+                      return null;
+                    },
+                  ),
+                ]),
               ),
               SizedBox(
                 height: 20,
@@ -43,8 +70,10 @@ class _LoginState extends State<Login> {
               ),
               OutlinedButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Home()));
+                    if (_formkey.currentState!.validate()) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Home()));
+                    }
                   },
                   child: Text("Login")),
               SizedBox(
