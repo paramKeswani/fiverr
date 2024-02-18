@@ -1,11 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:f/n_search.dart';
 import 'package:f/serach_home.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:firebase_database/ui/firebase_list.dart';
 import 'package:flutter/material.dart';
 import 'pop.dart';
 import 'n_search.dart';
 import 'n_form.dart';
 import 'n_logout.dart';
 import 'n_contact.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -16,6 +21,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int currentPage = 0;
+  final auth = FirebaseAuth.instance;
+  final ref = FirebaseDatabase.instance.ref('abc');
 
   @override
   Widget build(BuildContext context) {
@@ -92,161 +99,20 @@ class _HomeState extends State<Home> {
                     direction: Axis.horizontal,
                     children: [
                       Container(
-                        margin: EdgeInsets.fromLTRB(20, 10, 10, 80),
-                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        decoration: BoxDecoration(
-                            border: Border(
-                          right: BorderSide(
-                            //                   <--- right side
-                            color: Colors.black,
-                            width: 3.0,
-                          ),
-                        )),
-                        child: Image.network(
-                            "https://i.pinimg.com/736x/23/ea/0c/23ea0c17068f4e290bada3457c5fef0b.jpg",
-                            height: 700,
-                            width: 80),
+                        height: 500,
+                        width: double.infinity,
+                        child: Expanded(
+                            child: FirebaseAnimatedList(
+                                query: ref,
+                                itemBuilder:
+                                    (context, DataSnapshot, Animation, Index) {
+                                  return ListTile(
+                                    title: Text(DataSnapshot.child('j_cat')
+                                        .value
+                                        .toString()),
+                                  );
+                                })),
                       ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Architect Engineer",
-                                style: TextStyle(
-                                    color: Colors.amber,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold)),
-                            Text("Apple",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold)),
-                            Text("We Need an Architect Engineer",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("for our new ofice design",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("and its construction .",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("Architectural engineers apply",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("practical and ....",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold))
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Icon(Icons.navigate_next),
-                        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                      ),
-                    ],
-                  ),
-                  color: Color.fromARGB(255, 194, 63, 53),
-                  height: 200,
-                  width: double.infinity,
-                  margin: EdgeInsets.all(10),
-                ),
-              ),
-              Card(
-                shadowColor: Colors.black,
-                elevation: 10,
-                child: Container(
-                  child: Flex(
-                    direction: Axis.horizontal,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(20, 10, 10, 80),
-                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        decoration: BoxDecoration(
-                            border: Border(
-                          right: BorderSide(
-                            //                   <--- right side
-                            color: Colors.black,
-                            width: 3.0,
-                          ),
-                        )),
-                        child: Image.network(
-                            "https://i.pinimg.com/736x/23/ea/0c/23ea0c17068f4e290bada3457c5fef0b.jpg",
-                            height: 700,
-                            width: 80),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Architect Engineer",
-                                style: TextStyle(
-                                    color: Colors.amber,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold)),
-                            Text("Apple",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold)),
-                            Text("We Need an Architect Engineer",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("for our new ofice design",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("and its construction .",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("Architectural engineers apply",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("practical and ....",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold))
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Icon(Icons.navigate_next),
-                        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                      ),
-                    ],
-                  ),
-                  color: Color.fromARGB(255, 194, 63, 53),
-                  height: 200,
-                  width: double.infinity,
-                  margin: EdgeInsets.all(10),
-                ),
-              ),
-              Card(
-                shadowColor: Colors.black,
-                elevation: 10,
-                child: Container(
-                  child: Flex(
-                    direction: Axis.horizontal,
-                    children: [
                       Container(
                         margin: EdgeInsets.fromLTRB(20, 10, 10, 80),
                         padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
@@ -318,288 +184,55 @@ class _HomeState extends State<Home> {
                   margin: EdgeInsets.all(10),
                 ),
               ),
-              Card(
-                shadowColor: Colors.black,
-                elevation: 10,
-                child: Container(
-                  child: Flex(
-                    direction: Axis.horizontal,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(20, 10, 10, 80),
-                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        decoration: BoxDecoration(
-                            border: Border(
-                          right: BorderSide(
-                            //                   <--- right side
-                            color: Colors.black,
-                            width: 3.0,
-                          ),
-                        )),
-                        child: Image.network(
-                            "https://i.pinimg.com/736x/23/ea/0c/23ea0c17068f4e290bada3457c5fef0b.jpg",
-                            height: 700,
-                            width: 80),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Architect Engineer",
-                                style: TextStyle(
-                                    color: Colors.amber,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold)),
-                            Text("Apple",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold)),
-                            Text("We Need an Architect Engineer",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("for our new ofice design",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("and its construction .",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("Architectural engineers apply",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("practical and ....",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold))
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Icon(Icons.navigate_next),
-                        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                      ),
-                    ],
-                  ),
-                  color: Color.fromARGB(255, 194, 63, 53),
-                  height: 200,
-                  width: double.infinity,
-                  margin: EdgeInsets.all(10),
-                ),
-              ),
-              Card(
-                shadowColor: Colors.black,
-                elevation: 10,
-                child: Container(
-                  child: Flex(
-                    direction: Axis.horizontal,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(20, 10, 10, 80),
-                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        decoration: BoxDecoration(
-                            border: Border(
-                          right: BorderSide(
-                            //                   <--- right side
-                            color: Colors.black,
-                            width: 3.0,
-                          ),
-                        )),
-                        child: Image.network(
-                            "https://i.pinimg.com/736x/23/ea/0c/23ea0c17068f4e290bada3457c5fef0b.jpg",
-                            height: 700,
-                            width: 80),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Architect Engineer",
-                                style: TextStyle(
-                                    color: Colors.amber,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold)),
-                            Text("Apple",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold)),
-                            Text("We Need an Architect Engineer",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("for our new ofice design",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("and its construction .",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("Architectural engineers apply",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("practical and ....",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold))
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Icon(Icons.navigate_next),
-                        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                      ),
-                    ],
-                  ),
-                  color: Color.fromARGB(255, 194, 63, 53),
-                  height: 200,
-                  width: double.infinity,
-                  margin: EdgeInsets.all(10),
-                ),
-              ),
-              Card(
-                shadowColor: Colors.black,
-                elevation: 10,
-                child: Container(
-                  child: Flex(
-                    direction: Axis.horizontal,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(20, 10, 10, 80),
-                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        decoration: BoxDecoration(
-                            border: Border(
-                          right: BorderSide(
-                            //                   <--- right side
-                            color: Colors.black,
-                            width: 3.0,
-                          ),
-                        )),
-                        child: Image.network(
-                            "https://i.pinimg.com/736x/23/ea/0c/23ea0c17068f4e290bada3457c5fef0b.jpg",
-                            height: 700,
-                            width: 80),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Architect Engineer",
-                                style: TextStyle(
-                                    color: Colors.amber,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold)),
-                            Text("Apple",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold)),
-                            Text("We Need an Architect Engineer",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("for our new ofice design",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("and its construction .",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("Architectural engineers apply",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
-                            Text("practical and ....",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold))
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Icon(Icons.navigate_next),
-                        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                      ),
-                    ],
-                  ),
-                  color: Color.fromARGB(255, 194, 63, 53),
-                  height: 200,
-                  width: double.infinity,
-                  margin: EdgeInsets.all(10),
-                ),
-              )
             ],
           ),
         ),
       ),
-      bottomNavigationBar: NavigationBar(
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.list), label: ""),
-          NavigationDestination(icon: Icon(Icons.search), label: ""),
-          NavigationDestination(icon: Icon(Icons.add), label: ""),
-          NavigationDestination(icon: Icon(Icons.account_circle), label: ""),
-          NavigationDestination(icon: Icon(Icons.logout), label: "")
-        ],
-        //generally on something represent the functions like onpress and all
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPage = index;
-          });
-          switch (index) {
-            case 0:
-              // Navigate to the list page
-              // Navigator.push(
-              //     context, MaterialPageRoute(builder: (context) => home()));
-              break;
-            case 1:
-              // Navigate to the search page
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => n_search()));
-              break;
-            case 2:
-              // Navigate to the add page
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => form()));
-              break;
-            case 3:
-              // Navigate to the account page
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => contact()));
-              break;
-            case 4:
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => logout()));
+    );
+    bottomNavigationBar:
+    NavigationBar(
+      destinations: const [
+        NavigationDestination(icon: Icon(Icons.list), label: ""),
+        NavigationDestination(icon: Icon(Icons.search), label: ""),
+        NavigationDestination(icon: Icon(Icons.add), label: ""),
+        NavigationDestination(icon: Icon(Icons.account_circle), label: ""),
+        NavigationDestination(icon: Icon(Icons.logout), label: "")
+      ],
+      //generally on something represent the functions like onpress and all
+      onDestinationSelected: (int index) {
+        setState(() {
+          currentPage = index;
+        });
+        switch (index) {
+          case 0:
+            // Navigate to the list page
+            // Navigator.push(
+            //     context, MaterialPageRoute(builder: (context) => home()));
+            break;
+          case 1:
+            // Navigate to the search page
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => n_search()));
+            break;
+          case 2:
+            // Navigate to the add page
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => form()));
+            break;
+          case 3:
+            // Navigate to the account page
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => contact()));
+            break;
+          case 4:
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => logout()));
 
-              break;
-          }
-        },
+            break;
+        }
+      },
 
-        selectedIndex: currentPage,
-      ),
+      selectedIndex: currentPage,
     );
   }
 }
