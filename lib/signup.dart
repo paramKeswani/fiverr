@@ -18,8 +18,35 @@ class _SignupState extends State<Signup> {
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool req = false;
 
   FirebaseAuth _auth = FirebaseAuth.instance;
+  void login() {
+    bool req = false;
+    setState(() {
+      req = true;
+    });
+    _auth
+        .createUserWithEmailAndPassword(
+            email: emailController.text.toString(),
+            password: passwordController.text.toString())
+        .then((value) {
+      setState(() {
+        req = false;
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Login()),
+      );
+      // Handle successful authentication here
+    }).onError((error, stackTrace) {
+      utils().toastMessage(error.toString());
+      req = false;
+      setState(() {
+        req = false;
+      });
+    });
+  }
 
   @override
   void dispose() {
@@ -32,7 +59,6 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
-    bool req = false;
     return PopScope(
       onPopInvoked: (_) async {
         SystemNavigator.pop();
@@ -108,32 +134,7 @@ class _SignupState extends State<Signup> {
                     OutlinedButton(
                         onPressed: () {
                           if (_formkey.currentState!.validate()) {
-                            setState(() {
-                              req = true;
-                            });
-                            _auth
-                                .createUserWithEmailAndPassword(
-                                    email: emailController.text.toString(),
-                                    password:
-                                        passwordController.text.toString())
-                                .then((value) {
-                              setState(() {
-                                req = false;
-                              });
-                              // Handle successful authentication here
-                            }).onError((error, stackTrace) {
-                              utils().toastMessage(error.toString());
-                              setState(() {
-                                req = false;
-                              });
-                            });
-
-                            if (req == true) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Login()));
-                            }
+                            login();
                           }
                         },
                         child: Text("Sign Up")),
@@ -143,8 +144,8 @@ class _SignupState extends State<Signup> {
                     Text("Already have an account? "),
                     TextButton(
                         onPressed: () {
-                          // Navigator.push(context,
-                          //     MaterialPageRoute(builder: (context) => Login()));
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Login()));
                         },
                         child: const Text(
                           "Login",

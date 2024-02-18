@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'signup.dart';
 import 'home.dart';
+import "utils/utils.dart";
+import 'main.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -13,6 +16,22 @@ class _LoginState extends State<Login> {
   final _formkey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final _auth = FirebaseAuth.instance;
+
+  void login() {
+    _auth
+        .signInWithEmailAndPassword(
+            email: emailController.text,
+            password: passwordController.text.toString())
+        .then((value) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Home()),
+      );
+    }).onError((error, stackTrace) {
+      utils().toastMessage(error.toString());
+    });
+  }
 
   @override
   void dispose() {
@@ -71,8 +90,7 @@ class _LoginState extends State<Login> {
               OutlinedButton(
                   onPressed: () {
                     if (_formkey.currentState!.validate()) {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Home()));
+                      login();
                     }
                   },
                   child: Text("Login")),
